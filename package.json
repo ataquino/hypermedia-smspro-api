@@ -1,0 +1,24 @@
+{
+  "name": "hypermedia-smspro-api",
+  "version": "0.1.1",
+  "description": "Wrapper for Hypermedia Systems' SMS PRO Gateway API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ataquino/hypermedia-smspro-api.git"
+  },
+  "keywords": [
+    "hypermedia",
+    "sms",
+    "gateway"
+  ],
+  "author": "Arthur de Aquino <ataquino@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://github.com/ataquino/hypermedia-smspro-api#readme",
+  "dependencies": {
+    "net": "^1.0.2"
+  }
+}
