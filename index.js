@@ -2,6 +2,12 @@
 const util = require('util');
 const net = require('net');
 
+const AUTHENTICATION = 'authentication';
+const REGISTER_INCOMING_SMS = 'register_for_incoming_sms';
+const REGISTER_OUTGOING_SMS = 'register_for_outgoing_sms';
+const UNREGISTER_INCOMING_SMS = 'unregister_for_incoming_sms';
+const UNREGISTER_OUTGOING_SMS = 'unregister_for_outgoing_sms';
+
 var Hypermedia = function () {
     var self = this;
     self.closed = true;
@@ -16,7 +22,7 @@ Hypermedia.prototype.authenticate = function (password, clientId) {
     var self = this;
 
     var request = {
-        method: 'authentication',
+        method: AUTHENTICATION,
         server_password: password
     };
 
@@ -44,16 +50,23 @@ Hypermedia.prototype.sendSms = function (number, message, messageId) {
 };
 
 Hypermedia.prototype.registerForIncommingSms = function () {
-    var self = this;
-
-    var request = {
-        method: 'register_for_incoming_sms'
-    };
-
-    return self._sendRequest(request);
+    return this._sendRequest({ method: REGISTER_INCOMING_SMS });
 };
 
-//** Helper Functions
+Hypermedia.prototype.registerForOutgoingSms = function () {
+    return this._sendRequest({ method: REGISTER_OUTGOING_SMS });
+};
+
+Hypermedia.prototype.unregisterForIncommingSms = function () {
+    return this._sendRequest({ method: UNREGISTER_INCOMING_SMS });
+};
+
+Hypermedia.prototype.unregisterForOutgoingSms = function () {
+    return this._sendRequest({ method: UNREGISTER_OUTGOING_SMS });
+};
+
+
+//** Helper methods
 Hypermedia.prototype.connect = function () {
     var self = this;
 
@@ -110,6 +123,14 @@ Hypermedia.prototype._onSocketData = function (data) {
 
         if (json.number && json.reply === 'error') {
             self._socket.emit('sms_error', json);
+        }
+
+        if (json.notification === 'cdr' && json.direction === 'in') {
+            self._socket.emit('incoming', json);
+        }
+
+        if (json.notification === 'cdr' && json.direction === 'out') {
+            self._socket.emit('outgoing', json);
         }
 
         self._socket.emit('message', json);
