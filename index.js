@@ -49,7 +49,7 @@ Hypermedia.prototype.sendSms = function (number, message, messageId) {
     return self._sendRequest(request);
 };
 
-Hypermedia.prototype.registerForIncommingSms = function () {
+Hypermedia.prototype.registerForIncomingSms = function () {
     return this._sendRequest({ method: REGISTER_INCOMING_SMS });
 };
 
@@ -57,7 +57,7 @@ Hypermedia.prototype.registerForOutgoingSms = function () {
     return this._sendRequest({ method: REGISTER_OUTGOING_SMS });
 };
 
-Hypermedia.prototype.unregisterForIncommingSms = function () {
+Hypermedia.prototype.unregisterForIncomingSms = function () {
     return this._sendRequest({ method: UNREGISTER_INCOMING_SMS });
 };
 
