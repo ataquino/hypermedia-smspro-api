@@ -1,12 +1,11 @@
-'use strict';
-const util = require('util');
-const net = require('net');
+var util = require('util')
+    ,net = require('net');
 
-const AUTHENTICATION = 'authentication';
-const REGISTER_INCOMING_SMS = 'register_for_incoming_sms';
-const REGISTER_OUTGOING_SMS = 'register_for_outgoing_sms';
-const UNREGISTER_INCOMING_SMS = 'unregister_for_incoming_sms';
-const UNREGISTER_OUTGOING_SMS = 'unregister_for_outgoing_sms';
+var AUTHENTICATION = 'authentication'
+    ,REGISTER_INCOMING_SMS = 'register_for_incoming_sms'
+    ,REGISTER_OUTGOING_SMS = 'register_for_outgoing_sms'
+    ,UNREGISTER_INCOMING_SMS = 'unregister_for_incoming_sms'
+    ,UNREGISTER_OUTGOING_SMS = 'unregister_for_outgoing_sms';
 
 var Hypermedia = function () {
     var self = this;
