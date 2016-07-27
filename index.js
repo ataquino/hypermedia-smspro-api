@@ -125,11 +125,18 @@ Hypermedia.prototype._onSocketData = function (data) {
         }
 
         if (json.notification === 'cdr' && json.direction === 'in') {
-            self._socket.emit('incoming', json);
+            self._socket.emit('cdr_in', json);
         }
 
         if (json.notification === 'cdr' && json.direction === 'out') {
-            self._socket.emit('outgoing', json);
+            if (json.result === 'OK') {
+                self._socket.emit('cdr_out_ok', json);
+            } else if (json.result.startsWith('Err-')) {
+                json.error_no = json.result.substring(4);
+                self._socket.emit('cdr_out_error', json);
+            } else {
+                self._socket.emit('cdr_out', json);
+            }
         }
 
         self._socket.emit('message', json);
