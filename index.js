@@ -13,6 +13,7 @@ var Hypermedia = function () {
     self.authenticated = false;
     self._socket = new net.Socket();
     self._socket.on('data', self._onSocketData.bind(self));
+    self._buffer = '';
 };
 module.exports = Hypermedia;
 
@@ -86,6 +87,9 @@ Hypermedia.prototype._parseJson = function (str) {
     try {
         return JSON.parse(str);
     } catch (e) {
+        console.log(e);
+        console.log(e.message);
+        console.log(str);
         return undefined;
     }
 };
@@ -94,12 +98,10 @@ Hypermedia.prototype._sendRequest = function (request) {
     return this._socket.write(JSON.stringify(request)+'\r\n');
 };
 
-//** Events
-Hypermedia.prototype._onSocketData = function (data) {
+Hypermedia.prototype._process = function (message) {
+    
     var self = this;
-
-    data = data.toString();
-    var json = self._parseJson(data);
+    var json = self._parseJson(message);
 
     if (json !== undefined) {
 
@@ -141,4 +143,22 @@ Hypermedia.prototype._onSocketData = function (data) {
 
         self._socket.emit('message', json);
     }
+};
+
+//** Events
+Hypermedia.prototype._onSocketData = function (data) {
+    var self = this;
+
+    var prev = 0, next;
+    data = data.toString('utf8');
+    while ((next = data.indexOf('\n', prev)) > -1) {
+        
+        self._buffer += data.substring(prev, next);
+
+        self._process(self._buffer);        
+
+        self._buffer = '';
+        prev = next + 1;
+    }
+    self._buffer += data.substring(prev);
 };
