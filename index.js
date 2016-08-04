@@ -13,6 +13,7 @@ var Hypermedia = function () {
     self.authenticated = false;
     self._socket = new net.Socket();
     self._socket.on('data', self._onSocketData.bind(self));
+    self._socket.setKeepAlive(true, 10000);
     self._buffer = '';
 };
 module.exports = Hypermedia;
@@ -88,7 +89,6 @@ Hypermedia.prototype._parseJson = function (str) {
         return JSON.parse(str);
     } catch (e) {
         console.log(e);
-        console.log(e.message);
         console.log(str);
         return undefined;
     }
@@ -162,3 +162,4 @@ Hypermedia.prototype._onSocketData = function (data) {
     }
     self._buffer += data.substring(prev);
 };
+
