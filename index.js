@@ -34,7 +34,7 @@ Hypermedia.prototype.authenticate = function (password, clientId) {
     return self._sendRequest(request);
 };
 
-Hypermedia.prototype.sendSms = function (number, message, messageId) {
+Hypermedia.prototype.sendSms = function (number, message, messageId, sendToSim) {
     var self = this;
 
     var request = {
@@ -45,6 +45,10 @@ Hypermedia.prototype.sendSms = function (number, message, messageId) {
 
     if (messageId) {
         request.msg_id = messageId;
+    }
+
+    if (sendToSim) {
+        request.send_to_sim = sendToSim;
     }
 
     return self._sendRequest(request);
