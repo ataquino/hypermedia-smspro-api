@@ -86,6 +86,13 @@ Hypermedia.prototype.on = function () {
     return self;
 };
 
+Hypermedia.prototype.close = function () {
+    var self = this;
+
+    self._socket.close.apply(self._socket, arguments);
+    return self;
+}
+
 Hypermedia.prototype._parseJson = function (str) {
     var self = this;
 
